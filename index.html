@@ -18,6 +18,25 @@
   --tx:#1a1916;--dim:#8a8880;--ac:#7c3aed;--ac-dim:#ede9fe;
   --green:#059669;--red:#dc2626;--yellow:#d97706;
 }
+/* ── 이북 흑백 테마 ── */
+[data-theme="ebook"]{
+  --bg:#ffffff;--sf:#ffffff;--sf2:#f0f0f0;--bd:#cccccc;
+  --tx:#000000;--dim:#555555;--ac:#000000;--ac-dim:#e8e8e8;
+  --green:#000000;--red:#000000;--yellow:#000000;
+}
+[data-theme="ebook"] *{font-family:'Noto Serif KR',serif!important}
+[data-theme="ebook"] .sp{display:none}
+[data-theme="ebook"] .ul{display:none}
+[data-theme="ebook"] .delay-dot{display:none}
+[data-theme="ebook"] .tok.going{opacity:0.08}
+[data-theme="ebook"] .sdot{background:#aaa}
+[data-theme="ebook"] .sdot.hit{background:#000}
+[data-theme="ebook"] .sdot.miss{background:#666}
+[data-theme="ebook"] .pf{background:#000}
+[data-theme="ebook"] .ob.correct{background:#e8e8e8;border-color:#000;color:#000}
+[data-theme="ebook"] .ob.wrong{background:#e8e8e8;border-color:#555;color:#555}
+[data-theme="ebook"] .toast{border-radius:4px}
+[data-theme="ebook"] .judge-btn.chosen-c,[data-theme="ebook"] .judge-btn.chosen-w{filter:none}
 
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100dvh;overflow:hidden;background:var(--bg);color:var(--tx);font-family:'Noto Serif KR',serif;transition:background .2s,color .2s}
@@ -121,13 +140,6 @@ select{appearance:none;cursor:pointer}
 .resume-badge{font-family:'IBM Plex Mono',monospace;font-size:9px;background:var(--ac-dim);
   color:var(--ac);border-radius:4px;padding:1px 5px;margin-left:6px}
 
-/* LOADING */
-#loading{align-items:center;justify-content:center;gap:18px;text-align:center;padding:40px}
-.sp{width:44px;height:44px;border:3px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.lt{color:var(--dim);font-size:14px;line-height:1.6}
-.ld{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ac)}
-
 /* WB DETAIL */
 #wbDetail{overflow-y:auto}
 .dh{display:flex;align-items:center;gap:7px;padding:12px 14px;border-bottom:1px solid var(--bd);flex-shrink:0}
@@ -159,8 +171,8 @@ select{appearance:none;cursor:pointer}
   width:9px;height:9px;border-radius:50%;background:var(--ac);opacity:0}
 .delay-dot.show{opacity:.6;animation:pulse 1s ease-in-out infinite}
 @keyframes pulse{0%,100%{transform:scale(1);opacity:.35}50%{transform:scale(1.7);opacity:.85}}
-.tok{display:inline;transition:opacity .1s ease-out}
-.tok.going{opacity:.07;color:var(--ac)}.tok.gone{opacity:0}
+.tok{display:inline;transition:opacity 0.25s ease-in-out}
+.tok.going{opacity:0.05}.tok.gone{opacity:0;transition:none}
 .tf{flex-shrink:0;padding:9px 12px 16px;border-top:1px solid var(--bd)}
 .tf-top{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:8px}
 .spd-btn{background:var(--sf2);border:1px solid var(--bd);color:var(--tx);padding:9px 16px;
@@ -168,15 +180,10 @@ select{appearance:none;cursor:pointer}
   transition:all .15s;touch-action:manipulation;min-height:40px}
 .spd-btn:hover{border-color:var(--ac);color:var(--ac)}
 .spd-val{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ac);min-width:70px;text-align:center}
-.nxbtn{width:100%;background:var(--sf);border:1.5px solid var(--green);color:var(--green);
-  padding:14px;border-radius:11px;font-family:'IBM Plex Mono',monospace;font-size:13px;
-  cursor:pointer;text-align:center;transition:background .15s;touch-action:manipulation}
-.nxbtn:active{background:#0d2218}.nxbtn:disabled{opacity:.3;cursor:not-allowed}
+.nxbtn{display:none}
 
 /* QUESTION */
 #question{overflow:hidden}
-.qh{padding:13px 16px 10px;border-bottom:1px solid var(--bd);flex-shrink:0;text-align:center}
-.ql{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--ac);text-transform:uppercase;margin-bottom:4px}
 .qb{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:7px;overflow-y:auto;align-items:center}
 .qt{font-size:16px;line-height:1.55;font-weight:600;text-align:center;width:100%;max-width:540px}
 .ow{width:100%;max-width:540px;display:flex;flex-direction:column;gap:7px}
@@ -204,38 +211,20 @@ select{appearance:none;cursor:pointer}
   display:none;line-height:1.6}
 .subj-reveal.show{display:block}
 .subj-reveal strong{color:var(--ac);font-size:16px}
-/* 자가 채점 UI */
-.score-wrap{width:100%;max-width:540px;display:none;flex-direction:column;align-items:center;gap:10px}
-.score-wrap.show{display:flex}
-.score-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
-.score-btns{display:flex;gap:6px;width:100%}
-.sc-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
-  padding:12px 4px 10px;border-radius:12px;border:2px solid var(--bd);
-  background:var(--sf);cursor:pointer;transition:all .18s;touch-action:manipulation;
-  -webkit-tap-highlight-color:transparent;min-height:64px}
-.sc-btn:hover{border-color:var(--ac);transform:translateY(-2px)}
-.sc-btn:active{transform:translateY(0) scale(.96)}
-.sc-btn .sc-num{font-family:'IBM Plex Mono',monospace;font-size:17px;font-weight:700;line-height:1;color:var(--dim)}
-.sc-btn .sc-pip{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;min-height:10px}
-.sc-pip-dot{width:5px;height:5px;border-radius:50%;background:var(--bd)}
-.sc-btn[data-sc="0"] .sc-num{color:var(--red)}.sc-btn[data-sc="0"]:hover{border-color:var(--red)}
-.sc-btn[data-sc="0"].chosen{background:rgba(248,113,113,.1);border-color:var(--red)}
-.sc-btn[data-sc="0"].chosen .sc-pip-dot{background:var(--red)}
-.sc-btn[data-sc="1"] .sc-num{color:#fb923c}.sc-btn[data-sc="1"]:hover{border-color:#fb923c}
-.sc-btn[data-sc="1"].chosen{background:rgba(251,146,60,.1);border-color:#fb923c}
-.sc-btn[data-sc="1"].chosen .sc-pip-dot{background:#fb923c}
-.sc-btn[data-sc="2"] .sc-num{color:var(--yellow)}.sc-btn[data-sc="2"]:hover{border-color:var(--yellow)}
-.sc-btn[data-sc="2"].chosen{background:rgba(251,191,36,.1);border-color:var(--yellow)}
-.sc-btn[data-sc="2"].chosen .sc-pip-dot{background:var(--yellow)}
-.sc-btn[data-sc="3"] .sc-num{color:#86efac}.sc-btn[data-sc="3"]:hover{border-color:#86efac}
-.sc-btn[data-sc="3"].chosen{background:rgba(134,239,172,.1);border-color:#86efac}
-.sc-btn[data-sc="3"].chosen .sc-pip-dot{background:#86efac}
-.sc-btn[data-sc="4"] .sc-num{color:var(--green)}.sc-btn[data-sc="4"]:hover{border-color:var(--green)}
-.sc-btn[data-sc="4"].chosen{background:rgba(110,231,183,.1);border-color:var(--green)}
-.sc-btn[data-sc="4"].chosen .sc-pip-dot{background:var(--green)}
-.sc-btn[data-sc="5"] .sc-num{color:var(--ac)}.sc-btn[data-sc="5"]:hover{border-color:var(--ac)}
-.sc-btn[data-sc="5"].chosen{background:rgba(167,139,250,.12);border-color:var(--ac)}
-.sc-btn[data-sc="5"].chosen .sc-pip-dot{background:var(--ac)}
+/* 주관식 정오답 채점 버튼 */
+.judge-wrap{width:100%;max-width:540px;display:none;gap:10px}
+.judge-wrap.show{display:flex}
+.judge-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:16px 10px;border-radius:13px;border:2px solid;font-family:'IBM Plex Mono',monospace;
+  font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;touch-action:manipulation;
+  letter-spacing:.5px;min-height:56px}
+.judge-btn.wrong{background:rgba(248,113,113,.08);border-color:var(--red);color:var(--red)}
+.judge-btn.correct{background:rgba(110,231,183,.08);border-color:var(--green);color:var(--green)}
+.judge-btn:hover{filter:brightness(1.15);transform:translateY(-1px)}
+.judge-btn:active{transform:scale(.97)}
+.judge-btn.chosen-w{background:rgba(248,113,113,.2);border-color:var(--red)}
+.judge-btn.chosen-c{background:rgba(110,231,183,.2);border-color:var(--green)}
+.judge-key{font-size:10px;opacity:.55;border:1px solid currentColor;border-radius:4px;padding:1px 5px;font-weight:400}
 /* skip/feedback */
 .skip-wrap{width:100%;max-width:540px}
 .skip-btn{width:100%;background:none;border:1.5px solid var(--bd);color:var(--dim);
@@ -268,6 +257,17 @@ select{appearance:none;cursor:pointer}
 .rbtn.pr{background:var(--ac);color:#fff;font-weight:700}
 .rbtn.se{background:var(--sf);border:1px solid var(--bd);color:var(--dim)}
 
+/* TOGGLE SWITCH */
+.toggle-sw{position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0}
+.toggle-sw input{opacity:0;width:0;height:0;position:absolute}
+.toggle-knob{position:absolute;cursor:pointer;inset:0;background:var(--bd);border-radius:26px;transition:.2s}
+.toggle-knob:before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;
+  background:#fff;border-radius:50%;transition:.2s}
+.toggle-sw input:checked+.toggle-knob{background:var(--ac)}
+.toggle-sw input:checked+.toggle-knob:before{transform:translateX(18px)}
+[data-theme="ebook"] .toggle-knob{background:var(--bd)}
+[data-theme="ebook"] .toggle-sw input:checked+.toggle-knob{background:#000}
+
 /* TOAST */
 .toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);
   background:var(--sf2);border:1px solid var(--bd);color:var(--tx);
@@ -277,6 +277,13 @@ select{appearance:none;cursor:pointer}
 .toast.show{opacity:1}
 .toast.up{color:var(--green);border-color:var(--green)}
 .toast.dn{color:var(--red);border-color:var(--red)}
+
+/* HELP */
+.help-key-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim);line-height:1.5}
+.help-key-row span{color:var(--tx)}
+kbd{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;
+  background:var(--sf2);border:1px solid var(--bd);border-radius:5px;
+  padding:2px 7px;color:var(--ac);white-space:nowrap}
 
 /* MODAL */
 .mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:flex-end}
@@ -310,52 +317,12 @@ select{appearance:none;cursor:pointer}
     <div class="ht">읽기 유창성 훈련</div>
     <div class="hn">
       <button class="hnb active" data-nav="lib">📚 라이브러리</button>
-      <button class="hnb" data-nav="new">✦ 생성</button>
       <button class="hnb" data-nav="imp">📂 불러오기</button>
       <button class="hnb" data-nav="cfg">⚙ 설정</button>
     </div>
   </div>
   <div class="htab active" id="tab-lib"><div id="libRoot"></div></div>
 
-  <!-- 새 생성 -->
-  <div class="htab" id="tab-new">
-    <div class="card">
-      <div class="card-title">AI 제공자 / 모델</div>
-      <div class="tabs" style="margin-bottom:10px">
-        <button class="tab active" data-p="openai">OpenAI</button>
-        <button class="tab" data-p="gemini">Gemini</button>
-      </div>
-      <div class="fw"><div class="fl">모델</div><select id="modelSelect"></select></div>
-      <div class="fw"><div class="fl">API 키</div><input type="password" id="apiKey" placeholder="sk-..." autocomplete="off"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">세션 설정</div>
-      <div class="row2">
-        <div class="fw"><div class="fl">폴더</div><select id="folderSelect"></select></div>
-        <div class="fw" style="max-width:80px"><div class="fl">지문 수</div><input type="number" id="count" value="15" min="3" max="50"></div>
-      </div>
-      <div class="fw"><div class="fl">주제</div><input type="text" id="topic" placeholder="예: LEET 논리추론, 법철학, 과학"></div>
-      <div class="fl" style="margin-bottom:6px">지문 글자 수 범위</div>
-      <div style="display:flex;gap:7px;align-items:center;margin-bottom:5px">
-        <input type="number" id="charMin" value="30" min="10" max="500" style="max-width:75px">
-        <span style="color:var(--dim)">—</span>
-        <input type="number" id="charMax" value="80" min="10" max="500" style="max-width:75px">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim)">자</span>
-      </div>
-      <div class="sd" style="margin-bottom:11px">초급 15-30자 · 중급 30-80자 · LEET형 80-200자</div>
-      <div class="fl" style="margin-bottom:6px;display:flex;align-items:center;justify-content:space-between">
-        추가 프롬프트 <span style="color:var(--dim);font-size:9px">(선택)</span>
-        <div style="display:flex;gap:5px">
-          <button class="ab" style="padding:4px 9px;font-size:10px" id="savePromptBtn">저장</button>
-          <button class="ab" style="padding:4px 9px;font-size:10px;border-color:var(--dim);color:var(--dim)" id="loadPromptBtn">불러오기</button>
-        </div>
-      </div>
-      <textarea id="extraPrompt" placeholder="예: LEET 언어이해 스타일. 논리적 추론이 필요한 질문."></textarea>
-      <div class="fw" style="margin-bottom:0;margin-top:10px"><div class="fl">문제집 이름</div><input type="text" id="wbName" placeholder="예: LEET 논리추론 15문"></div>
-    </div>
-    <button class="btn-p" id="generateBtn">AI 문장 생성 후 저장 →</button>
-    <div style="height:32px"></div>
-  </div>
 
   <!-- JSON 불러오기 -->
   <div class="htab" id="tab-imp">
@@ -396,6 +363,37 @@ select{appearance:none;cursor:pointer}
 
   <!-- 설정 -->
   <div class="htab" id="tab-cfg">
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">화면 모드</div>
+      <div class="tabs" style="margin-bottom:0">
+        <button class="tab active" data-tm="dark">🌑 다크</button>
+        <button class="tab" data-tm="light">☀️ 라이트</button>
+        <button class="tab" data-tm="ebook">📖 이북</button>
+      </div>
+      <div class="sd" id="themeDesc" style="margin-top:8px">OLED 화면에 최적화된 어두운 배경</div>
+    </div>
+    <div class="card" id="nbackCard">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0">
+        <div>
+          <div class="card-title" style="margin-bottom:3px">N-Back 모드</div>
+          <div class="sd" id="nbackDesc">현재 지문이 아닌 N번째 전 지문에 대한 문제를 풉니다</div>
+        </div>
+        <label class="toggle-sw" title="N-Back 켜기/끄기">
+          <input type="checkbox" id="nbackToggle">
+          <span class="toggle-knob"></span>
+        </label>
+      </div>
+      <div id="nbackNWrap" style="display:none;margin-top:12px;border-top:1px solid var(--bd);padding-top:12px">
+        <div class="fw" style="margin-bottom:0"><div class="fl">N 값 (몇 번째 전 지문)</div>
+          <div class="nst">
+            <button class="nb" data-cfg="nbackN" data-d="-1" data-min="1" data-max="9">−</button>
+            <div class="nv" id="val-nbackN">2</div>
+            <button class="nb" data-cfg="nbackN" data-d="1" data-min="1" data-max="9">+</button>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);margin-left:4px">단계 전</span>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="card">
       <div class="card-title">훈련 속도 모드</div>
       <div class="tabs" style="margin-bottom:9px">
@@ -425,35 +423,89 @@ select{appearance:none;cursor:pointer}
     </div>
     <div class="card">
       <div class="card-title">타이밍 설정</div>
-      <div class="fw"><div class="fl">페이딩 시작 대기</div>
-        <div class="nst"><button class="nb" data-cfg="preFadeDelay" data-d="-50" data-min="0" data-max="2000">−</button><div class="nv" id="val-preFadeDelay">300</div><button class="nb" data-cfg="preFadeDelay" data-d="50" data-min="0" data-max="2000">+</button><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);margin-left:4px">ms</span></div>
+      <div class="fw"><div class="fl">보기 선택 후 전환 딜레이</div>
+        <div class="nst"><button class="nb" data-cfg="answerDelay" data-d="-100" data-min="0" data-max="3000">−</button><div class="nv" id="val-answerDelay">500</div><button class="nb" data-cfg="answerDelay" data-d="100" data-min="0" data-max="3000">+</button><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);margin-left:4px">ms</span></div>
+        <div class="sd">객관식 답 선택 후 다음 지문으로 자동 전환되기까지의 시간</div>
       </div>
-      <div class="fw" style="margin-bottom:0"><div class="fl">문제 후 딜레이</div>
+      <div class="fw" style="margin-bottom:0"><div class="fl">지문 간 딜레이</div>
         <div class="nst"><button class="nb" data-cfg="interDelay" data-d="-100" data-min="0" data-max="3000">−</button><div class="nv" id="val-interDelay">800</div><button class="nb" data-cfg="interDelay" data-d="100" data-min="0" data-max="3000">+</button><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);margin-left:4px">ms</span></div>
       </div>
     </div>
-    <div class="card"><div class="card-title">OpenAI 모델</div>
-      <div class="ml" id="openaiModelList"></div>
-      <div class="ar"><input type="text" id="addOpenaiModel" placeholder="모델명"><button class="ab" data-provider="openai">+ 추가</button></div>
-    </div>
-    <div class="card"><div class="card-title">Gemini 모델</div>
-      <div class="ml" id="geminiModelList"></div>
-      <div class="ar"><input type="text" id="addGeminiModel" placeholder="모델명"><button class="ab" data-provider="gemini">+ 추가</button></div>
-    </div>
+
     <div class="card"><div class="card-title">폴더 관리</div>
       <div id="folderMgr"></div>
       <div class="ar" style="margin-top:7px"><input type="text" id="newFolderName" placeholder="새 폴더 이름"><button class="ab" id="addFolderBtn">+ 추가</button></div>
+    </div>
+    <div class="card">
+      <div class="card-title">도움말</div>
+      <button class="btn-p" id="helpBtn" style="background:var(--sf2);color:var(--tx);border:1px solid var(--bd)">📖 사용 설명서 보기</button>
     </div>
     <div style="height:32px"></div>
   </div>
 </div>
 
-<!-- LOADING -->
-<div id="loading" class="screen">
-  <div class="sp"></div>
-  <div class="lt">AI가 문장과 질문을 생성 중입니다.<br>잠시 기다려주세요.</div>
-  <div class="ld" id="loadDetail">API 요청 전송 중...</div>
+<!-- HELP -->
+<div id="help" class="screen">
+  <div style="display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;gap:10px">
+    <button class="btn-g" id="helpBackBtn">← 뒤로</button>
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ac);letter-spacing:2px">HELP</span>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px">
+    <div class="card">
+      <div class="card-title">프로그램 소개</div>
+      <p style="font-size:13px;line-height:1.9;color:var(--tx)">
+        읽기 훈련기는 <strong>텍스트 페이딩</strong> 기법을 활용한 독해 속도 및 집중력 훈련 도구입니다.<br><br>
+        지문이 글자 단위로 서서히 사라지는 동안 내용을 기억해야 하며, 이후 문제를 풀어 이해도를 확인합니다.
+        Nagler et al. (2015) 연구에 기반한 방식으로, 반복 훈련을 통해 읽기 속도와 작업 기억력을 향상시킵니다.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-title">사용법</div>
+      <p style="font-size:13px;line-height:2;color:var(--tx)">
+        <strong>1. 문제집 불러오기</strong><br>
+        &nbsp;&nbsp;📂 JSON 불러오기 탭에서 파일을 선택하거나 붙여넣기로 문제집을 추가합니다.<br><br>
+        <strong>2. 훈련 시작</strong><br>
+        &nbsp;&nbsp;라이브러리에서 폴더를 열고 ▶ 버튼을 눌러 훈련을 시작합니다.<br><br>
+        <strong>3. 지문 읽기</strong><br>
+        &nbsp;&nbsp;지문이 표시되면 읽으세요. 글자는 설정된 속도에 따라 서서히 사라집니다.<br>
+        &nbsp;&nbsp;모두 사라지면 자동으로 문제 화면으로 전환됩니다.<br><br>
+        <strong>4. 문제 풀기</strong><br>
+        &nbsp;&nbsp;객관식: 보기를 클릭하거나 숫자 키(1~5)를 누릅니다. 자동으로 다음 지문으로 넘어갑니다.<br>
+        &nbsp;&nbsp;주관식: 답을 입력 후 제출 → 모범 답안 확인 → 정오답 판단 (키보드 1=오답, 2=정답)<br><br>
+        <strong>5. N-Back 모드</strong><br>
+        &nbsp;&nbsp;설정에서 N-Back 모드를 켜면 N번 전에 읽은 지문의 문제를 풀게 됩니다.<br>
+        &nbsp;&nbsp;작업 기억력 훈련에 효과적입니다.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-title">키보드 단축키</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="help-key-row"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd><kbd>5</kbd> <span>객관식 보기 선택 (일반/넘패드 숫자 모두 지원)</span></div>
+        <div class="help-key-row"><kbd>1</kbd> <span>주관식 채점 — 오답</span></div>
+        <div class="help-key-row"><kbd>2</kbd> <span>주관식 채점 — 정답</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">JSON 형식</div>
+      <div class="fl" style="margin-bottom:5px">객관식</div>
+      <pre style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--dim);overflow-x:auto;white-space:pre-wrap;margin-bottom:10px">[{
+  "text": "지문 내용",
+  "question": "질문?",
+  "options": ["보기1","보기2","보기3","보기4"],
+  "answer": 0
+}]</pre>
+      <div class="fl" style="margin-bottom:5px">주관식</div>
+      <pre style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--dim);overflow-x:auto;white-space:pre-wrap">[{
+  "text": "지문 내용",
+  "question": "질문?",
+  "type": "short",
+  "answer": "모범 답안"
+}]</pre>
+    </div>
+    <div style="height:32px"></div>
+  </div>
 </div>
+
 
 <!-- WB DETAIL -->
 <div id="wbDetail" class="screen">
@@ -472,7 +524,7 @@ select{appearance:none;cursor:pointer}
 <div id="training" class="screen">
   <div class="th">
     <div class="tl">
-      <div class="tm"><span id="trIdx">0</span>/<span id="trTotal">0</span> · <span id="trSpd">-</span>ms/글자 · 정답 <span id="trAcc">-</span>%</div>
+      <div class="tm"><span id="trIdx">0</span>/<span id="trTotal">0</span> · <span id="trSpd">-</span>ms/글자 · 정답 <span id="trAcc">-</span>%<span id="nbackBadge" style="display:none;margin-left:6px;color:var(--ac)"></span></div>
       <div class="sd-row" id="streakDots"></div>
     </div>
     <button class="btn-g" id="exitBtn">종료</button>
@@ -497,10 +549,7 @@ select{appearance:none;cursor:pointer}
 
 <!-- QUESTION -->
 <div id="question" class="screen">
-  <div class="qh">
-    <div class="ql">이해도 확인</div>
-  </div>
-  <div class="qb">
+  <div class="qb" style="padding-top:20px">
     <div class="qt" id="qText"></div>
     <!-- 객관식 영역 -->
     <div class="ow" id="optsWrap">
@@ -508,15 +557,16 @@ select{appearance:none;cursor:pointer}
       <button class="ob" id="opt1"></button>
       <button class="ob" id="opt2"></button>
       <button class="ob" id="opt3"></button>
+      <button class="ob" id="opt4" style="display:none"></button>
     </div>
     <!-- 주관식 영역 -->
     <div class="subj-wrap" id="subjWrap" style="display:none">
       <input class="subj-input" id="subjInput" type="text" placeholder="답을 입력하세요" autocomplete="off">
       <button class="subj-submit" id="subjSubmit">제출</button>
       <div class="subj-reveal" id="subjReveal"></div>
-      <div class="score-wrap" id="scoreWrap">
-        <div class="score-label">내 답 채점하기</div>
-        <div class="score-btns" id="scoreBtns"></div>
+      <div class="judge-wrap" id="judgeWrap" style="display:none">
+        <button class="judge-btn wrong" id="judgeWrong">✗ 오답 <span class="judge-key">1</span></button>
+        <button class="judge-btn correct" id="judgeCorrect">✓ 정답 <span class="judge-key">2</span></button>
       </div>
     </div>
     <div class="skip-wrap"><button class="skip-btn" id="skipBtn">모름 / 건너뜀</button></div>
@@ -577,12 +627,18 @@ const LS={
 // ── 테마 ──
 let theme=LS.get('rfader_theme','dark');
 function applyTheme(t){
-  document.documentElement.setAttribute('data-theme',t==='light'?'light':'');
-  document.getElementById('themeBtn').textContent=t==='light'?'🌙':'☀️';
+  const map={dark:'',light:'light',ebook:'ebook'};
+  document.documentElement.setAttribute('data-theme',map[t]||'');
+  const icons={dark:'☀️',light:'🌙',ebook:'📖'};
+  document.getElementById('themeBtn').textContent=icons[t]||'☀️';
   theme=t;LS.set('rfader_theme',t);
 }
 applyTheme(theme);
-document.getElementById('themeBtn').addEventListener('click',()=>applyTheme(theme==='dark'?'light':'dark'));
+document.getElementById('themeBtn').addEventListener('click',()=>{
+  const order=['dark','light','ebook'];
+  const next=order[(order.indexOf(theme)+1)%order.length];
+  applyTheme(next);
+});
 
 // ── CONFIG (로컬 + Firebase /settings 문서) ──
 const DCFG={
@@ -592,15 +648,17 @@ const DCFG={
   geminiModels:['gemini-2.0-flash','gemini-2.5-flash','gemini-2.5-pro','gemini-1.5-flash'],
   topic:'',count:15,charMin:30,charMax:80,extraPrompt:'',wbName:'',lastFolder:'',
   streakUp:4,streakDown:4,speedStep:10,initSpeed:90,
-  speedMode:'adaptive',preFadeDelay:300,interDelay:800,
+  speedMode:'adaptive',answerDelay:500,interDelay:800,
   savedPrompts:[],
+  nbackOn:false,nbackN:2,
 };
 let CFG={...DCFG,...LS.get('rfader_cfg',{})};
 
 // API 키는 로컬에만 보관, 나머지는 Firebase에도 저장
 const CLOUD_CFG_KEYS=['provider','openaiModel','geminiModel','openaiModels','geminiModels',
   'topic','count','charMin','charMax','extraPrompt','wbName','lastFolder',
-  'streakUp','streakDown','speedStep','initSpeed','speedMode','preFadeDelay','interDelay','savedPrompts'];
+  'streakUp','streakDown','speedStep','initSpeed','speedMode','answerDelay','interDelay','savedPrompts',
+  'nbackOn','nbackN'];
 
 function saveCfg(){
   LS.set('rfader_cfg',CFG);
@@ -830,13 +888,13 @@ function renderLib(){
       </div>`;}).join(''):'<div class="es" style="padding:6px 0">문제집 없음</div>';
     return`<div class="fs">
       <div class="fhd" data-fid="${folder.id}">
-        <span class="fch open">▶</span><span style="font-size:13px">📁</span>
+        <span class="fch">▶</span><span style="font-size:13px">📁</span>
         <span class="flb">${esc(folder.name)}</span>
         <span class="fmeta">${wbs.length}개</span>
         <button class="btn-ic" data-fr="${folder.id}">✏️</button>
         <button class="btn-ic" data-fd="${folder.id}">🗑</button>
       </div>
-      <div class="fb open">${wbHtml}</div>
+      <div class="fb">${wbHtml}</div>
     </div>`;
   }).join('');
 
@@ -855,11 +913,7 @@ function renderLib(){
   }));
   root.querySelectorAll('[data-fd]').forEach(b=>b.addEventListener('click',async e=>{
     e.stopPropagation();
-    const cnt=getLib().workbooks.filter(w=>w.folderId===b.dataset.fd).length;
-    const f=getLib().folders.find(f=>f.id===b.dataset.fd);
-    if(await confirmDel(f?.name||'',cnt?`내부 문제집 ${cnt}개도 삭제됩니다.`:'')){
-      await deleteFolder(b.dataset.fd);renderLib();updateFolderSelects();renderFolderMgr();
-    }
+    await deleteFolder(b.dataset.fd);renderLib();updateFolderSelects();renderFolderMgr();
   }));
   // 문제집 rename/delete/start
   root.querySelectorAll('[data-wr]').forEach(b=>b.addEventListener('click',async e=>{
@@ -868,8 +922,7 @@ function renderLib(){
     if(n){await renameWorkbook(b.dataset.wr,n);renderLib();}
   }));
   root.querySelectorAll('[data-wd]').forEach(b=>b.addEventListener('click',async e=>{
-    e.stopPropagation();const wb=getWorkbook(b.dataset.wd);
-    if(await confirmDel(wb?.name||'이 문제집')){await deleteWorkbook(b.dataset.wd);renderLib();}
+    e.stopPropagation();await deleteWorkbook(b.dataset.wd);renderLib();
   }));
   root.querySelectorAll('[data-ws]').forEach(b=>b.addEventListener('click',async e=>{
     e.stopPropagation();await handleStartWorkbook(b.dataset.ws);
@@ -941,7 +994,8 @@ function validateImport(data){
   return data.filter(item=>{
     if(!item.text||!item.question) return false;
     if(item.type==='short') return typeof item.answer==='string'&&item.answer.length>0;
-    return Array.isArray(item.options)&&item.options.length===4&&typeof item.answer==='number'&&item.answer>=0&&item.answer<=3;
+    const ol=item.options?.length;
+    return Array.isArray(item.options)&&(ol===4||ol===5)&&typeof item.answer==='number'&&item.answer>=0&&item.answer<ol;
   });
 }
 function showImportPreview(data){
@@ -999,6 +1053,88 @@ document.getElementById('loadPromptBtn').addEventListener('click',async()=>{
 
 // ── SETTINGS ──
 function initSettings(){
+  // N-Back 토글
+  const nbackToggle=document.getElementById('nbackToggle');
+  const nbackNWrap=document.getElementById('nbackNWrap');
+  function updateNBackUI(){
+    nbackNWrap.style.display=CFG.nbackOn?'block':'none';
+    const el=document.getElementById('nbackDesc');
+    if(el) el.textContent=CFG.nbackOn
+      ?`${CFG.nbackN}번째 전 지문의 문제를 현재 지문 후에 풉니다`
+      :'현재 지문이 아닌 N번째 전 지문에 대한 문제를 풉니다';
+  }
+  if(nbackToggle){
+    nbackToggle.checked=CFG.nbackOn||false;
+    nbackToggle.addEventListener('change',()=>{CFG.nbackOn=nbackToggle.checked;saveCfg();updateNBackUI();});
+    updateNBackUI();
+  }
+
+  // 화면 모드 탭
+  const themeDescs={dark:'OLED 화면에 최적화된 어두운 배경',light:'밝은 환경에 적합한 라이트 모드',ebook:'이북 리더기용 고대비 흑백 모드 (애니메이션 없음)'};
+  document.querySelectorAll('[data-tm]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('[data-tm]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      applyTheme(btn.dataset.tm);
+      document.getElementById('themeDesc').textContent=themeDescs[btn.dataset.tm]||'';
+    });
+  });
+  document.querySelectorAll('.nb').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const key=btn.dataset.cfg,d=parseInt(btn.dataset.d),min=parseInt(btn.dataset.min??0),max=parseInt(btn.dataset.max??9999);
+      CFG[key]=Math.max(min,Math.min(max,(CFG[key]??DCFG[key])+d));
+      const el=document.getElementById('val-'+key);if(el)el.textContent=CFG[key];
+      saveCfg();
+    });
+  });
+  document.querySelectorAll('[data-sm]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('[data-sm]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');CFG.speedMode=btn.dataset.sm;updateSpeedModeUI();saveCfg();
+    });
+  });
+
+  renderFolderMgr();
+  const folderInp=document.getElementById('newFolderName');
+  const doAddFolder=async()=>{
+    const n=folderInp.value.trim();if(!n) return;
+    setSyncState('busy');
+    await addFolder(n);
+    setSyncState('ok');
+    folderInp.value='';renderFolderMgr();updateFolderSelects();renderLib();
+    showToast(`폴더 "${n}" 생성됨`,'up');
+  };
+  document.getElementById('addFolderBtn').addEventListener('click',doAddFolder);
+  folderInp.addEventListener('keydown',e=>{if(e.key==='Enter')doAddFolder();});
+}
+function updateSpeedModeUI(){
+  const a=CFG.speedMode==='adaptive';
+  document.getElementById('adaptiveCard').style.display=a?'block':'none';
+  document.getElementById('speedModeDesc').textContent=a?'정답/오답 연속에 따라 자동으로 속도를 조절합니다':'훈련 중 버튼으로 직접 속도를 조절합니다';
+}
+function renderFolderMgr(){
+  const el=document.getElementById('folderMgr');
+  el.innerHTML=getLib().folders.map(f=>`
+    <div class="mc" style="margin-bottom:5px">
+      <span class="mc-n">📁 ${esc(f.name)}</span>
+      <div style="display:flex;gap:4px">
+        <button class="cb" data-fmr="${f.id}" style="font-size:14px">✏️</button>
+        <button class="cb" data-fmd="${f.id}">✕</button>
+      </div>
+    </div>`).join('');
+  el.querySelectorAll('[data-fmr]').forEach(btn=>btn.addEventListener('click',async()=>{
+    const f=getLib().folders.find(f=>f.id===btn.dataset.fmr);
+    const n=await promptName('폴더 이름 변경',f?.name||'');
+    if(n){await renameFolder(btn.dataset.fmr,n);renderFolderMgr();updateFolderSelects();renderLib();}
+  }));
+  el.querySelectorAll('[data-fmd]').forEach(btn=>btn.addEventListener('click',async()=>{
+    await deleteFolder(btn.dataset.fmd);renderFolderMgr();updateFolderSelects();renderLib();
+  }));
+}
+
+
+// ── SETTINGS ──
+function initSettings(){
   document.querySelectorAll('.nb').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const key=btn.dataset.cfg,d=parseInt(btn.dataset.d),min=parseInt(btn.dataset.min??0),max=parseInt(btn.dataset.max??9999);
@@ -1024,10 +1160,17 @@ function initSettings(){
     });
   });
   renderFolderMgr();
-  document.getElementById('addFolderBtn').addEventListener('click',async()=>{
-    const inp=document.getElementById('newFolderName');const n=inp.value.trim();if(!n) return;
-    await addFolder(n);inp.value='';renderFolderMgr();updateFolderSelects();renderLib();
-  });
+  const folderInp=document.getElementById('newFolderName');
+  const doAddFolder=async()=>{
+    const n=folderInp.value.trim();if(!n) return;
+    setSyncState('busy');
+    await addFolder(n);
+    setSyncState('ok');
+    folderInp.value='';renderFolderMgr();updateFolderSelects();renderLib();
+    showToast(`폴더 "${n}" 생성됨`,'up');
+  };
+  document.getElementById('addFolderBtn').addEventListener('click',doAddFolder);
+  folderInp.addEventListener('keydown',e=>{if(e.key==='Enter')doAddFolder();});
 }
 function updateSpeedModeUI(){
   const a=CFG.speedMode==='adaptive';
@@ -1065,11 +1208,7 @@ function renderFolderMgr(){
     if(n){await renameFolder(btn.dataset.fmr,n);renderFolderMgr();updateFolderSelects();renderLib();}
   }));
   el.querySelectorAll('[data-fmd]').forEach(btn=>btn.addEventListener('click',async()=>{
-    const cnt=getLib().workbooks.filter(w=>w.folderId===btn.dataset.fmd).length;
-    const f=getLib().folders.find(f=>f.id===btn.dataset.fmd);
-    if(await confirmDel(f?.name||'',cnt?`내부 문제집 ${cnt}개도 삭제됩니다.`:'')){
-      await deleteFolder(btn.dataset.fmd);renderFolderMgr();updateFolderSelects();renderLib();
-    }
+    await deleteFolder(btn.dataset.fmd);renderFolderMgr();updateFolderSelects();renderLib();
   }));
 }
 
@@ -1104,97 +1243,45 @@ function updateApiKeyField(){
   inp.placeholder=CFG.provider==='openai'?'sk-...':'AIza...';
 }
 function updateFolderSelects(){
-  const opts=getLib().folders.map(f=>`<option value="${f.id}"${f.id===CFG.lastFolder?' selected':''}>${esc(f.name)}</option>`).join('');
-  document.getElementById('folderSelect').innerHTML=opts;
+  const opts=getLib().folders.map(f=>`<option value="${f.id}">${esc(f.name)}</option>`).join('');
   document.getElementById('impFolderSelect').innerHTML=opts;
 }
 function restoreSettings(){
   document.querySelectorAll('[data-p]').forEach(b=>b.classList.toggle('active',b.dataset.p===CFG.provider));
   document.querySelectorAll('[data-sm]').forEach(b=>b.classList.toggle('active',b.dataset.sm===CFG.speedMode));
-  ['streakUp','streakDown','speedStep','initSpeed','preFadeDelay','interDelay'].forEach(k=>{
+  ['streakUp','streakDown','speedStep','initSpeed','answerDelay','interDelay'].forEach(k=>{
     const el=document.getElementById('val-'+k);if(el)el.textContent=CFG[k];
   });
-  document.getElementById('topic').value=CFG.topic||'';
-  document.getElementById('count').value=CFG.count||15;
-  document.getElementById('charMin').value=CFG.charMin||30;
-  document.getElementById('charMax').value=CFG.charMax||80;
-  document.getElementById('extraPrompt').value=CFG.extraPrompt||'';
-  document.getElementById('wbName').value=CFG.wbName||'';
-  updateModelSelect();updateApiKeyField();updateSpeedModeUI();
+  updateSpeedModeUI();
+  // N-Back 복원
+  const nbTog=document.getElementById('nbackToggle');
+  if(nbTog){nbTog.checked=CFG.nbackOn||false;}
+  const nbNEl=document.getElementById('val-nbackN');if(nbNEl)nbNEl.textContent=CFG.nbackN||2;
+  const nbWrap=document.getElementById('nbackNWrap');if(nbWrap)nbWrap.style.display=CFG.nbackOn?'block':'none';
+  // 화면 모드 탭 복원
+  document.querySelectorAll('[data-tm]').forEach(b=>b.classList.toggle('active',b.dataset.tm===theme));
+  const themeDescs2={dark:'OLED 화면에 최적화된 어두운 배경',light:'밝은 환경에 적합한 라이트 모드',ebook:'이북 리더기용 고대비 흑백 모드 (애니메이션 없음)'};
+  const tdesc=document.getElementById('themeDesc');if(tdesc)tdesc.textContent=themeDescs2[theme]||'';
 }
 
-// ── AI GENERATION ──
-document.getElementById('generateBtn').addEventListener('click',async()=>{
-  const apiKey=CFG.provider==='openai'?CFG.openaiKey:CFG.geminiKey;
-  if(!apiKey){showToast('API 키를 입력하세요','');return;}
-  const topic=CFG.topic||'일반 지식';
-  const count=Math.max(3,Math.min(50,parseInt(CFG.count)||15));
-  const cMin=parseInt(CFG.charMin)||30,cMax=parseInt(CFG.charMax)||80;
-  if(cMin>=cMax){showToast('최소 < 최대 글자 수여야 합니다','');return;}
-  const wbName=document.getElementById('wbName').value.trim()||`${topic} ${count}문`;
-  const folderId=document.getElementById('folderSelect').value||getLib().folders[0]?.id||'default';
-  show('loading');document.getElementById('loadDetail').textContent='API 요청 전송 중...';
-  try{
-    let raw;
-    if(CFG.provider==='openai') raw=await callOpenAI(CFG.openaiKey,buildPrompt(topic,count,cMin,cMax,CFG.extraPrompt));
-    else raw=await callGemini(CFG.geminiKey,buildPrompt(topic,count,cMin,cMax,CFG.extraPrompt));
-    document.getElementById('loadDetail').textContent='파싱 중...';
-    const data=parseResp(raw);
-    if(!data||!data.length) throw new Error('파싱 실패');
-    const wb={id:'wb'+Date.now(),folderId,name:wbName,topic,ts:Date.now(),data};
-    await addWorkbook(wb);renderLib();startTraining(data,wb.id,0,CFG.initSpeed,0,0);
-  }catch(err){show('home');showToast('오류: '+err.message.slice(0,60),'');console.error(err);}
-});
-
-function buildPrompt(topic,count,cMin,cMax,extra){
-  const ep=extra?`\n추가 지시: ${extra}`:'';
-  return`주제 "${topic}"에 관한 한국어 읽기 훈련 지문 ${count}개를 생성하세요.\n각 지문은 ${cMin}~${cMax}자 사이여야 합니다.${ep}\n\n각 지문에 대해 객관식 질문 1개를 작성하세요.\n보기는 정확히 4개 (정답 1개, 오답 3개).\n\nJSON 배열만 출력 (마크다운 없이):\n[{"text":"지문","question":"질문?","options":["①","②","③","④"],"answer":0}]`;
-}
-async function callOpenAI(key,prompt){
-  const body={model:CFG.openaiModel,messages:[{role:'user',content:prompt}],temperature:0.7,max_completion_tokens:8000};
-  const resp=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify(body)});
-  if(!resp.ok){
-    const e=await resp.json().catch(()=>({}));
-    if(resp.status===400&&e?.error?.message?.includes('max_completion_tokens')){
-      const b2={...body};delete b2.max_completion_tokens;b2.max_tokens=8000;
-      const r2=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify(b2)});
-      if(!r2.ok){const e2=await r2.json().catch(()=>({}));throw new Error(`OpenAI ${r2.status}: ${e2?.error?.message||r2.statusText}`);}
-      return(await r2.json()).choices[0].message.content;
-    }
-    throw new Error(`OpenAI ${resp.status}: ${e?.error?.message||resp.statusText}`);
-  }
-  return(await resp.json()).choices[0].message.content;
-}
-async function callGemini(key,prompt){
-  const url=`https://generativelanguage.googleapis.com/v1beta/models/${CFG.geminiModel}:generateContent?key=${key}`;
-  const resp=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.7,maxOutputTokens:8000}})});
-  if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(`Gemini ${resp.status}: ${e?.error?.message||resp.statusText}`);}
-  return(await resp.json()).candidates[0].content.parts[0].text;
-}
-function parseResp(raw){
-  let text=raw.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
-  const s=text.indexOf('['),e=text.lastIndexOf(']');
-  if(s===-1||e===-1) throw new Error('JSON 배열을 찾을 수 없습니다');
-  const data=JSON.parse(text.slice(s,e+1));
-  return data.filter(item=>item.text&&item.question&&(
-    (Array.isArray(item.options)&&item.options.length===4&&typeof item.answer==='number')||
-    (item.type==='short'&&typeof item.answer==='string')
-  ));
-}
 
 // ── TRAINING ──
 const SPEED_MIN=20,SPEED_MAX=400;
 let trainingData=[],curIdx=0,msPerChar=90,initMsPerChar=90;
+let currentQItem=null; // 현재 표시 중인 문제의 지문 item (N-Back 지원)
 let correctCnt=0,answeredCnt=0,streak=0;
 let shortScoreTotal=0,shortScoreMax=0; // 주관식 자가채점 누적
 let fadingTimer=null,delayTimer=null;
 let currentWbId=null;
 
+// N-Back: sentHistory[i]는 i번째까지 표시된 지문들의 배열
+let nbackSentHistory=[];
 function startTraining(data,wbId,startIdx,startSpd,cor,ans){
   trainingData=data;curIdx=startIdx;currentWbId=wbId||null;
   msPerChar=startSpd||CFG.initSpeed;initMsPerChar=CFG.initSpeed;
   correctCnt=cor||0;answeredCnt=ans||0;streak=0;
   shortScoreTotal=0;shortScoreMax=0;
+  nbackSentHistory=[];
   document.getElementById('manualSpeedRow').style.display=CFG.speedMode==='manual'?'flex':'none';
   updateSpdDisplay();show('training');enterDelay();
 }
@@ -1216,7 +1303,14 @@ function enterDelay(){
   delayTimer=setTimeout(()=>{document.getElementById('delayDot').classList.remove('show');loadSent();},CFG.interDelay);
 }
 function loadSent(){
-  if(curIdx>=trainingData.length){showResult();return;}
+  if(curIdx>=trainingData.length){
+    // N-Back 모드에서 마지막 지문들의 남은 문제 처리
+    if(CFG.nbackOn && nbackSentHistory.length < trainingData.length){
+      // 가상으로 curIdx를 늘려 남은 nback 문제들을 출제
+      showQFromHistory();return;
+    }
+    showResult();return;
+  }
   const item=trainingData[curIdx],chars=item.text.split('');
   document.getElementById('trIdx').textContent=curIdx+1;
   document.getElementById('trTotal').textContent=trainingData.length;
@@ -1236,14 +1330,73 @@ function loadSent(){
   requestAnimationFrame(()=>{ul.style.width=el.offsetWidth+'px';ul.className='ul active';});
   document.getElementById('nextBtn').disabled=false;
   clearFading();clearDelayTimer();
-  delayTimer=setTimeout(()=>startFading(chars.length),CFG.preFadeDelay);
+  // N-Back 배지
+  const nb=document.getElementById('nbackBadge');
+  if(nb){nb.style.display=CFG.nbackOn?'inline':'none';nb.textContent=CFG.nbackOn?`[${CFG.nbackN}-Back]`:'';}
+  startFading(chars.length);
 }
 function startFading(n){
-  let i=0;fadingTimer=setInterval(()=>{
-    if(i>0){const p=document.getElementById(`t${i-1}`);if(p){p.classList.remove('going');p.classList.add('gone');}}
-    if(i<n){const c=document.getElementById(`t${i}`);if(c)c.classList.add('going');i++;}
-    else clearFading();
+  // 각 글자+공백을 동일 간격(msPerChar)으로 처리
+  // going→gone 전환을 부드럽게: CSS transition 활용
+  let i=0;
+  fadingTimer=setInterval(()=>{
+    // 이전 tok 완전히 gone
+    if(i>0){
+      const p=document.getElementById(`t${i-1}`);
+      if(p){p.classList.remove('going');p.classList.add('gone');}
+    }
+    if(i<n){
+      const el=document.getElementById(`t${i}`);
+      if(el) el.classList.add('going');
+      i++;
+    }else{
+      clearFading();
+      // 모두 사라진 후 자동으로 문제 전환
+      setTimeout(()=>showQ(), 120);
+    }
   },msPerChar);
+}
+// N-Back tail: 모든 지문 읽은 후 남은 N-Back 문제들 처리
+function showQFromHistory(){
+  // nbackSentHistory에는 trainingData.length개가 있어야 완료
+  // 이 함수는 모든 지문을 읽은 후 남은 N-1개 질문을 이어서 냄
+  const pending=trainingData.length - nbackSentHistory.length;
+  if(pending <= 0){showResult();return;}
+  // 가상 push: 지문 없이 히스토리만 진행
+  nbackSentHistory.push(trainingData.length - pending + nbackSentHistory.length);
+  const histLen=nbackSentHistory.length;
+  const targetHistPos=histLen-1-CFG.nbackN;
+  if(targetHistPos >= 0){
+    currentQItem=trainingData[nbackSentHistory[targetHistPos]];
+    // 문제 화면 표시
+    document.getElementById('qText').textContent=currentQItem.question+` (${CFG.nbackN}번 전 지문)`;
+    document.getElementById('qFeedback').className='qfb';
+    document.getElementById('qNextBtn').className='qnb';
+    document.getElementById('skipBtn').disabled=false;
+    const isShort=currentQItem.type==='short';
+    document.getElementById('optsWrap').style.display=isShort?'none':'flex';
+    document.getElementById('subjWrap').style.display=isShort?'flex':'none';
+    if(isShort){
+      const inp=document.getElementById('subjInput');inp.value='';inp.disabled=false;
+      document.getElementById('subjSubmit').disabled=false;
+      document.getElementById('subjReveal').className='subj-reveal';
+      document.getElementById('subjReveal').innerHTML='';
+      document.getElementById('judgeWrap').className='judge-wrap';
+      document.getElementById('judgeWrong').disabled=false;
+      document.getElementById('judgeCorrect').disabled=false;
+      setTimeout(()=>inp.focus(),100);
+    }else{
+      const n=currentQItem.options.length;
+      [0,1,2,3,4].forEach(i=>{
+        const btn=document.getElementById(`opt${i}`);
+        if(i<n){btn.textContent=currentQItem.options[i];btn.className='ob';btn.disabled=false;btn.style.display='';btn.onclick=()=>handleMCQ(i,currentQItem.answer,n);}
+        else{btn.style.display='none';btn.className='ob';btn.disabled=true;}
+      });
+    }
+    show('question');
+  }else{
+    showResult();
+  }
 }
 function clearFading(){if(fadingTimer){clearInterval(fadingTimer);fadingTimer=null;}}
 function clearDelayTimer(){if(delayTimer){clearTimeout(delayTimer);delayTimer=null;}}
@@ -1256,8 +1409,29 @@ document.getElementById('exitBtn').addEventListener('click',()=>{
 
 // ── QUESTION ──
 function showQ(){
-  const item=trainingData[curIdx];
-  document.getElementById('qText').textContent=item.question;
+  // N-Back: 이번에 문제를 낼 지문 결정
+  // nbackSentHistory에 현재 curIdx 지문 push (지문 읽기 완료 시점)
+  nbackSentHistory.push(curIdx);
+  // 문제를 낼 지문 인덱스: nbackOn이면 N번 전, 아니면 현재
+  let qItemIdx=curIdx;
+  if(CFG.nbackOn){
+    const histLen=nbackSentHistory.length;
+    const targetHistPos=histLen-1-CFG.nbackN; // N번 전 히스토리 위치
+    if(targetHistPos>=0){
+      qItemIdx=nbackSentHistory[targetHistPos];
+    }else{
+      // 아직 N번 전 지문이 없으면 지문만 읽고 넘어가기 (문제 없이)
+      curIdx++;
+      if(currentWbId) saveProgress(currentWbId,curIdx,msPerChar,correctCnt,answeredCnt);
+      if(curIdx>=trainingData.length){showResult();return;}
+      show('training');enterDelay();return;
+    }
+  }
+  const item=trainingData[qItemIdx];
+  currentQItem=item;
+  // N-Back 모드면 어느 지문 문제인지 표시
+  const nbackHint=CFG.nbackOn?` (${CFG.nbackN}번 전 지문)`:'';
+  document.getElementById('qText').textContent=item.question+nbackHint;
   document.getElementById('qFeedback').className='qfb';
   document.getElementById('qNextBtn').className='qnb';
   document.getElementById('skipBtn').disabled=false;
@@ -1273,14 +1447,20 @@ function showQ(){
     document.getElementById('subjSubmit').disabled=false;
     document.getElementById('subjReveal').className='subj-reveal';
     document.getElementById('subjReveal').innerHTML='';
-    document.getElementById('scoreWrap').className='score-wrap'; // 채점 UI 숨김
-    document.getElementById('scoreBtns').innerHTML='';
+    document.getElementById('judgeWrap').className='judge-wrap';
+    document.getElementById('judgeWrong').disabled=false;
+    document.getElementById('judgeCorrect').disabled=false;
     setTimeout(()=>inp.focus(),100);
   }else{
-    [0,1,2,3].forEach(i=>{
+    const n=item.options.length; // 4 or 5
+    [0,1,2,3,4].forEach(i=>{
       const btn=document.getElementById(`opt${i}`);
-      btn.textContent=item.options[i];btn.className='ob';btn.disabled=false;
-      btn.onclick=()=>handleMCQ(i,item.answer);
+      if(i<n){
+        btn.textContent=item.options[i];btn.className='ob';btn.disabled=false;
+        btn.style.display='';btn.onclick=()=>handleMCQ(i,item.answer,n);
+      }else{
+        btn.style.display='none';btn.className='ob';btn.disabled=true;
+      }
     });
   }
   show('question');
@@ -1288,7 +1468,7 @@ function showQ(){
 
 // 주관식 제출
 document.getElementById('subjSubmit').addEventListener('click',()=>{
-  const item=trainingData[curIdx];
+  const item=currentQItem||trainingData[curIdx];
   const userAns=document.getElementById('subjInput').value.trim();
   if(!userAns) return;
   revealShortAnswer(item);
@@ -1296,70 +1476,70 @@ document.getElementById('subjSubmit').addEventListener('click',()=>{
 document.getElementById('subjInput').addEventListener('keydown',e=>{
   if(e.key==='Enter'){document.getElementById('subjSubmit').click();}
 });
+document.getElementById('judgeWrong').addEventListener('click',()=>handleShortJudge(false));
+document.getElementById('judgeCorrect').addEventListener('click',()=>handleShortJudge(true));
 
-// 제출 후 모범 답안 공개 + 채점 UI 표시
+// 제출 후 모범 답안 공개 + 정오답 버튼 표시
 function revealShortAnswer(item){
   document.getElementById('subjInput').disabled=true;
   document.getElementById('subjSubmit').disabled=true;
   document.getElementById('skipBtn').disabled=true;
-
-  // 모범 답안 표시
   const reveal=document.getElementById('subjReveal');
   reveal.innerHTML=`모범 답안<br><strong>${esc(item.answer)}</strong>`;
   reveal.className='subj-reveal show';
-
-  // 채점 버튼 생성 (0~5)
-  const scoreBtns=document.getElementById('scoreBtns');
-  scoreBtns.innerHTML='';
-  const SCORE_COLORS=['var(--red)','#fb923c','var(--yellow)','#86efac','var(--green)','var(--ac)'];
-  for(let s=0;s<=5;s++){
-    const btn=document.createElement('button');
-    btn.className='sc-btn';
-    btn.dataset.sc=s;
-    // 점 배열 (s개)
-    const pips=s>0?Array.from({length:s},()=>`<div class="sc-pip-dot"></div>`).join(''):'';
-    btn.innerHTML=`<span class="sc-num">${s}</span><div class="sc-pip">${pips}</div>`;
-    btn.addEventListener('click',()=>handleSelfScore(s,item));
-    scoreBtns.appendChild(btn);
-  }
-  document.getElementById('scoreWrap').className='score-wrap show';
+  document.getElementById('judgeWrap').className='judge-wrap show';
 }
 
-// 자가 채점 처리: 점수 0~5
-function handleSelfScore(score,item){
-  // 버튼 시각 업데이트
-  document.querySelectorAll('.sc-btn').forEach(b=>{
-    b.classList.toggle('chosen',parseInt(b.dataset.sc)===score);
-    b.style.pointerEvents='none';
-  });
-
+// 정오답 선택 → 즉시 다음으로
+function handleShortJudge(correct){
+  const jw=document.getElementById('judgeWrap');
+  document.getElementById('judgeWrong').classList.toggle('chosen-w',!correct);
+  document.getElementById('judgeCorrect').classList.toggle('chosen-c',correct);
+  document.getElementById('judgeWrong').disabled=true;
+  document.getElementById('judgeCorrect').disabled=true;
   answeredCnt++;
-  shortScoreTotal+=score;  // 0~5 누적
-  shortScoreMax+=5;        // 최대 가능 점수
-
+  if(correct){correctCnt++;shortScoreTotal+=5;}
+  shortScoreMax+=5;
   const fb=document.getElementById('qFeedback');
-  const grade=score===5?'✓ 완벽!':score===0?'✗ 0점':`${score}/5점`;
-  const cls=score>=4?'ok':score>=2?'sk':'ng';
-  fb.textContent=grade;fb.className=`qfb show ${cls}`;
-
-  if(CFG.speedMode==='adaptive')adaptSpeed(score>=3,false);
-  document.getElementById('qNextBtn').className='qnb show';
+  fb.textContent=correct?'✓ 정답':'✗ 오답';
+  fb.className=correct?'qfb show ok':'qfb show ng';
+  if(CFG.speedMode==='adaptive')adaptSpeed(correct,false);
+  // 즉시 다음으로
+  advanceAfterAnswer();
 }
 
-function handleMCQ(chosen,correct){
+let autoAdvTimer=null;
+function advanceAfterAnswer(delay=0){
+  if(autoAdvTimer){clearTimeout(autoAdvTimer);autoAdvTimer=null;}
+  autoAdvTimer=setTimeout(()=>{
+    curIdx++;
+    if(currentWbId) saveProgress(currentWbId,curIdx,msPerChar,correctCnt,answeredCnt);
+    if(curIdx>=trainingData.length && CFG.nbackOn && nbackSentHistory.length<trainingData.length){
+      showQFromHistory();
+    }else{
+      show('training');enterDelay();
+    }
+  },delay);
+}
+
+function handleMCQ(chosen,correct,n=4){
   const ok=chosen===correct;
-  [0,1,2,3].forEach(i=>{const btn=document.getElementById(`opt${i}`);btn.disabled=true;if(i===correct)btn.classList.add('correct');else if(i===chosen&&!ok)btn.classList.add('wrong');});
+  [0,1,2,3,4].forEach(i=>{
+    const btn=document.getElementById(`opt${i}`);
+    if(i<n){btn.disabled=true;if(i===correct)btn.classList.add('correct');else if(i===chosen&&!ok)btn.classList.add('wrong');}
+  });
   document.getElementById('skipBtn').disabled=true;
   answeredCnt++;if(ok)correctCnt++;
   const fb=document.getElementById('qFeedback');
   if(ok){fb.textContent='✓ 정답입니다!';fb.className='qfb show ok';}
-  else{fb.textContent=`✗ 정답: ${trainingData[curIdx].options[correct]}`;fb.className='qfb show ng';}
+  else{fb.textContent=`✗ 정답: ${(currentQItem||trainingData[curIdx]).options[correct]}`;fb.className='qfb show ng';}
   if(CFG.speedMode==='adaptive')adaptSpeed(ok,false);
-  document.getElementById('qNextBtn').className='qnb show';
+  // 자동 전환
+  advanceAfterAnswer(CFG.answerDelay||500);
 }
 
 document.getElementById('skipBtn').addEventListener('click',()=>{
-  const item=trainingData[curIdx];
+  const item=currentQItem||trainingData[curIdx];
   const isShort=item.type==='short';
   if(isShort){
     // 주관식 모름: 모범 답안 표시 후 0점 채점
@@ -1369,20 +1549,23 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
     reveal.innerHTML=`모범 답안<br><strong>${esc(item.answer)}</strong>`;
     reveal.className='subj-reveal show';
     document.getElementById('skipBtn').disabled=true;
-    answeredCnt++; // 점수 0 (correctCnt 증가 없음)
+    answeredCnt++;shortScoreMax+=5; // 주관식 skip = 0점
     const fb=document.getElementById('qFeedback');
-    fb.textContent='모름 — 0점';fb.className='qfb show sk';
+    fb.textContent='건너뜀';fb.className='qfb show sk';
     if(CFG.speedMode==='adaptive')adaptSpeed(false,true);
-    document.getElementById('qNextBtn').className='qnb show';
+    // 모범 답안 표시 후 정오답 버튼 대신 즉시 전환
+    advanceAfterAnswer(CFG.answerDelay||500);
   }else{
-    [0,1,2,3].forEach(i=>{const btn=document.getElementById(`opt${i}`);btn.disabled=true;if(i===item.answer)btn.classList.add('correct');});
+    const qItem=currentQItem||item;
+    const n2=qItem.options?.length||4;
+    [0,1,2,3,4].forEach(i=>{const btn=document.getElementById(`opt${i}`);if(i<n2){btn.disabled=true;if(i===qItem.answer)btn.classList.add('correct');}});
     document.getElementById('skipBtn').disabled=true;
     answeredCnt++;
     const fb=document.getElementById('qFeedback');
-    fb.textContent=`모름 — 정답: ${item.options[item.answer]}`;
+    fb.textContent=`건너뜀 — 정답: ${qItem.options[qItem.answer]}`;
     fb.className='qfb show sk';
     if(CFG.speedMode==='adaptive')adaptSpeed(false,true);
-    document.getElementById('qNextBtn').className='qnb show';
+    advanceAfterAnswer(CFG.answerDelay||500);
   }
 });
 
@@ -1394,10 +1577,8 @@ function adaptSpeed(ok,isSkip){
 }
 
 document.getElementById('qNextBtn').addEventListener('click',()=>{
-  curIdx++;
-  // 진행 상태 저장
-  if(currentWbId) saveProgress(currentWbId,curIdx,msPerChar,correctCnt,answeredCnt);
-  show('training');enterDelay();
+  if(autoAdvTimer){clearTimeout(autoAdvTimer);autoAdvTimer=null;}
+  advanceAfterAnswer(0);
 });
 
 // ── RESULT ──
@@ -1429,6 +1610,39 @@ document.getElementById('homeBtn').addEventListener('click',async()=>{
   show('home');renderLib();
 });
 
+// ── 키보드 단축키 ──
+document.addEventListener('keydown',e=>{
+  // 입력 필드 포커스 중엔 단축키 비활성
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  
+  // 숫자 키 판별 (일반 + 넘패드)
+  let num=null;
+  if(e.code>='Digit1'&&e.code<='Digit5') num=parseInt(e.code.slice(5));
+  else if(e.code>='Numpad1'&&e.code<='Numpad5') num=parseInt(e.code.slice(6));
+  if(num===null) return;
+
+  const qScreen=document.getElementById('question');
+  if(!qScreen.classList.contains('active')) return;
+
+  const isShort=document.getElementById('subjWrap').style.display!=='none';
+
+  if(isShort){
+    // 주관식 채점 단계: 1=오답, 2=정답
+    const jw=document.getElementById('judgeWrap');
+    if(jw.classList.contains('show')){
+      if(num===1) handleShortJudge(false);
+      else if(num===2) handleShortJudge(true);
+    }
+  }else{
+    // 객관식: 1~5번 보기 선택
+    const idx=num-1;
+    const btn=document.getElementById(`opt${idx}`);
+    if(btn&&!btn.disabled&&btn.style.display!=='none'&&btn.textContent){
+      btn.click();
+    }
+  }
+});
+
 // ── TOAST ──
 let tTimer=null;
 function showToast(msg,type){
@@ -1436,9 +1650,13 @@ function showToast(msg,type){
   if(tTimer)clearTimeout(tTimer);tTimer=setTimeout(()=>el.classList.remove('show'),2200);
 }
 
+// ── HELP ──
+document.getElementById('helpBtn').addEventListener('click',()=>show('help'));
+document.getElementById('helpBackBtn').addEventListener('click',()=>show('home'));
+
 // ── INIT ──
 window.addEventListener('DOMContentLoaded',()=>{
-  initSettings();initNewTab();restoreSettings();
+  initSettings();restoreSettings();
   // loadLib은 onAuthStateChanged에서 자동 호출
 });
 </script>
