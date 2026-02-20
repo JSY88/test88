@@ -1108,28 +1108,16 @@ document.getElementById('impSaveBtn').addEventListener('click',async()=>{
   document.getElementById('tab-lib').classList.add('active');
 });
 
-// ── SAVED PROMPTS ──
-document.getElementById('savePromptBtn').addEventListener('click',async()=>{
-  const text=document.getElementById('extraPrompt').value.trim();
-  if(!text){showToast('저장할 프롬프트를 입력하세요','');return;}
-  const r=await openModal({title:'프롬프트 저장',input:true,inputPlaceholder:'이름',buttons:[{label:'취소',cls:'m-cancel',value:'cancel'},{label:'저장',cls:'m-ok',value:'ok'}]});
-  if(r.btn==='ok'&&r.val){const ex=CFG.savedPrompts.find(p=>p.name===r.val);if(ex)ex.text=text;else CFG.savedPrompts.push({name:r.val,text});saveCfg();showToast('저장됨','up');}
-});
-document.getElementById('loadPromptBtn').addEventListener('click',async()=>{
-  if(!CFG.savedPrompts.length){showToast('저장된 프롬프트가 없습니다','');return;}
-  const r=await openModal({
-    title:'프롬프트 불러오기',
-    buttons:[...CFG.savedPrompts.map(p=>({label:p.name,cls:'m-ok',value:'p:'+p.name})),{label:'취소',cls:'m-cancel',value:'cancel'}]
-  });
-  if(r.btn.startsWith('p:')){const p=CFG.savedPrompts.find(p=>p.name===r.btn.slice(2));if(p){document.getElementById('extraPrompt').value=p.text;CFG.extraPrompt=p.text;saveCfg();showToast(`"${p.name}" 불러옴`,'up');}}
-});
+
+
 
 // ── SETTINGS ──
 function initSettings(){
-  // N-Back 토글
+  // ── N-Back 토글 ──
   const nbackToggle=document.getElementById('nbackToggle');
   const nbackNWrap=document.getElementById('nbackNWrap');
   function updateNBackUI(){
+    if(!nbackNWrap) return;
     nbackNWrap.style.display=CFG.nbackOn?'block':'none';
     const el=document.getElementById('nbackDesc');
     if(el) el.textContent=CFG.nbackOn
@@ -1141,17 +1129,18 @@ function initSettings(){
     nbackToggle.addEventListener('change',()=>{CFG.nbackOn=nbackToggle.checked;saveCfg();updateNBackUI();});
     updateNBackUI();
   }
-
-  // 화면 모드 탭
+  // ── 화면 모드 탭 ──
   const themeDescs={dark:'OLED 화면에 최적화된 어두운 배경',light:'밝은 환경에 적합한 라이트 모드',ebook:'이북 리더기용 고대비 흑백 모드 (애니메이션 없음)'};
   document.querySelectorAll('[data-tm]').forEach(btn=>{
     btn.addEventListener('click',()=>{
       document.querySelectorAll('[data-tm]').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       applyTheme(btn.dataset.tm);
-      document.getElementById('themeDesc').textContent=themeDescs[btn.dataset.tm]||'';
+      const tdesc=document.getElementById('themeDesc');
+      if(tdesc) tdesc.textContent=themeDescs[btn.dataset.tm]||'';
     });
   });
+  // ── 숫자 버튼(±) ──
   document.querySelectorAll('.nb').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const key=btn.dataset.cfg,d=parseInt(btn.dataset.d),min=parseInt(btn.dataset.min??0),max=parseInt(btn.dataset.max??9999);
@@ -1185,6 +1174,7 @@ function updateSpeedModeUI(){
   document.getElementById('adaptiveCard').style.display=a?'block':'none';
   document.getElementById('speedModeDesc').textContent=a?'정답/오답 연속에 따라 자동으로 속도를 조절합니다':'훈련 중 버튼으로 직접 속도를 조절합니다';
 }
+
 function renderFolderMgr(){
   const el=document.getElementById('folderMgr');
   el.innerHTML=getLib().folders.map(f=>`
@@ -1206,121 +1196,11 @@ function renderFolderMgr(){
 }
 
 
-// ── SETTINGS ──
-function initSettings(){
-  document.querySelectorAll('.nb').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const key=btn.dataset.cfg,d=parseInt(btn.dataset.d),min=parseInt(btn.dataset.min??0),max=parseInt(btn.dataset.max??9999);
-      CFG[key]=Math.max(min,Math.min(max,(CFG[key]??DCFG[key])+d));
-      const el=document.getElementById('val-'+key);if(el)el.textContent=CFG[key];
-      saveCfg();
-    });
-  });
-  document.querySelectorAll('[data-sm]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      document.querySelectorAll('[data-sm]').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');CFG.speedMode=btn.dataset.sm;updateSpeedModeUI();saveCfg();
-    });
-  });
-  renderModelLists();
-  document.querySelectorAll('.ab[data-provider]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const p=btn.dataset.provider;
-      const inp=document.getElementById('add'+p[0].toUpperCase()+p.slice(1)+'Model');
-      const v=inp.value.trim();if(!v) return;
-      const k=p+'Models';if(!CFG[k].includes(v)){CFG[k].push(v);saveCfg();renderModelLists();updateModelSelect();}
-      inp.value='';
-    });
-  });
-  renderFolderMgr();
-  const folderInp=document.getElementById('newFolderName');
-  const doAddFolder=async()=>{
-    const n=folderInp.value.trim();if(!n) return;
-    setSyncState('busy');
-    await addFolder(n);
-    setSyncState('ok');
-    folderInp.value='';renderFolderMgr();updateFolderSelects();renderLib();
-    showToast(`폴더 "${n}" 생성됨`,'up');
-  };
-  document.getElementById('addFolderBtn').addEventListener('click',doAddFolder);
-  folderInp.addEventListener('keydown',e=>{if(e.key==='Enter')doAddFolder();});
-}
-function updateSpeedModeUI(){
-  const a=CFG.speedMode==='adaptive';
-  document.getElementById('adaptiveCard').style.display=a?'block':'none';
-  document.getElementById('speedModeDesc').textContent=a?'정답/오답 연속에 따라 자동으로 속도를 조절합니다':'훈련 중 버튼으로 직접 속도를 조절합니다';
-}
-function renderModelLists(){
-  ['openai','gemini'].forEach(p=>{
-    const el=document.getElementById(p+'ModelList');
-    const models=CFG[p+'Models'];
-    const def=p==='openai'?['gpt-4.1-mini','gpt-4.1','gpt-4o','gpt-4o-mini','o4-mini','gpt-4.5']:['gemini-2.0-flash','gemini-2.5-flash','gemini-2.5-pro','gemini-1.5-flash'];
-    el.innerHTML=models.map(m=>`<div class="mc"><span class="mc-n">${m}</span>${!def.includes(m)?`<button class="cb"data-p="${p}"data-m="${m}">✕</button>`:'<span style="color:var(--dim);font-size:10px">기본</span>'}</div>`).join('');
-    el.querySelectorAll('.cb').forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        const k=btn.dataset.p+'Models';CFG[k]=CFG[k].filter(m=>m!==btn.dataset.m);
-        if(CFG[btn.dataset.p+'Model']===btn.dataset.m)CFG[btn.dataset.p+'Model']=CFG[k][0];
-        saveCfg();renderModelLists();updateModelSelect();
-      });
-    });
-  });
-}
-function renderFolderMgr(){
-  const el=document.getElementById('folderMgr');
-  el.innerHTML=getLib().folders.map(f=>`
-    <div class="mc" style="margin-bottom:5px">
-      <span class="mc-n">📁 ${esc(f.name)}</span>
-      <div style="display:flex;gap:4px">
-        <button class="cb" data-fmr="${f.id}" style="font-size:14px">✏️</button>
-        <button class="cb" data-fmd="${f.id}">✕</button>
-      </div>
-    </div>`).join('');
-  el.querySelectorAll('[data-fmr]').forEach(btn=>btn.addEventListener('click',async()=>{
-    const f=getLib().folders.find(f=>f.id===btn.dataset.fmr);
-    const n=await promptName('폴더 이름 변경',f?.name||'');
-    if(n){await renameFolder(btn.dataset.fmr,n);renderFolderMgr();updateFolderSelects();renderLib();}
-  }));
-  el.querySelectorAll('[data-fmd]').forEach(btn=>btn.addEventListener('click',async()=>{
-    await deleteFolder(btn.dataset.fmd);renderFolderMgr();updateFolderSelects();renderLib();
-  }));
-}
-
-// ── NEW FORM ──
-function initNewTab(){
-  document.querySelectorAll('[data-p]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      document.querySelectorAll('[data-p]').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');CFG.provider=btn.dataset.p;saveCfg();updateModelSelect();updateApiKeyField();
-    });
-  });
-  ['topic','count','extraPrompt','wbName','charMin','charMax'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.addEventListener('input',()=>{CFG[id]=el.value;saveCfg();});
-  });
-  document.getElementById('apiKey').addEventListener('input',()=>{
-    const v=document.getElementById('apiKey').value;
-    if(CFG.provider==='openai')CFG.openaiKey=v;else CFG.geminiKey=v;saveCfg();
-  });
-  document.getElementById('modelSelect').addEventListener('change',()=>{
-    const v=document.getElementById('modelSelect').value;
-    if(CFG.provider==='openai')CFG.openaiModel=v;else CFG.geminiModel=v;saveCfg();
-  });
-  document.getElementById('folderSelect').addEventListener('change',()=>{CFG.lastFolder=document.getElementById('folderSelect').value;saveCfg();});
-}
-function updateModelSelect(){
-  const sel=document.getElementById('modelSelect'),models=CFG[CFG.provider+'Models'],cur=CFG[CFG.provider+'Model'];
-  sel.innerHTML=models.map(m=>`<option value="${m}"${m===cur?' selected':''}>${m}</option>`).join('');
-}
-function updateApiKeyField(){
-  const inp=document.getElementById('apiKey');
-  inp.value=CFG.provider==='openai'?(CFG.openaiKey||''):(CFG.geminiKey||'');
-  inp.placeholder=CFG.provider==='openai'?'sk-...':'AIza...';
-}
 function updateFolderSelects(){
   const opts=getLib().folders.map(f=>`<option value="${f.id}">${esc(f.name)}</option>`).join('');
   document.getElementById('impFolderSelect').innerHTML=opts;
 }
 function restoreSettings(){
-  document.querySelectorAll('[data-p]').forEach(b=>b.classList.toggle('active',b.dataset.p===CFG.provider));
   document.querySelectorAll('[data-sm]').forEach(b=>b.classList.toggle('active',b.dataset.sm===CFG.speedMode));
   ['streakUp','streakDown','speedStep','initSpeed','preFadeDelay','answerDelay','interDelay'].forEach(k=>{
     const el=document.getElementById('val-'+k);if(el)el.textContent=CFG[k];
