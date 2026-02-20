@@ -423,12 +423,17 @@ kbd{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;
     </div>
     <div class="card">
       <div class="card-title">타이밍 설정</div>
-      <div class="fw"><div class="fl">보기 선택 후 전환 딜레이</div>
+      <div class="fw"><div class="fl">페이딩 시작 대기</div>
+        <div class="nst"><button class="nb" data-cfg="preFadeDelay" data-d="-50" data-min="0" data-max="2000">−</button><div class="nv" id="val-preFadeDelay">300</div><button class="nb" data-cfg="preFadeDelay" data-d="50" data-min="0" data-max="2000">+</button><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);margin-left:4px">ms</span></div>
+        <div class="sd">지문이 표시된 후 페이딩이 시작되기까지의 준비 시간</div>
+      </div>
+      <div class="fw"><div class="fl">답 선택 후 자동 전환 딜레이</div>
         <div class="nst"><button class="nb" data-cfg="answerDelay" data-d="-100" data-min="0" data-max="3000">−</button><div class="nv" id="val-answerDelay">500</div><button class="nb" data-cfg="answerDelay" data-d="100" data-min="0" data-max="3000">+</button><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);margin-left:4px">ms</span></div>
         <div class="sd">객관식 답 선택 후 다음 지문으로 자동 전환되기까지의 시간</div>
       </div>
       <div class="fw" style="margin-bottom:0"><div class="fl">지문 간 딜레이</div>
         <div class="nst"><button class="nb" data-cfg="interDelay" data-d="-100" data-min="0" data-max="3000">−</button><div class="nv" id="val-interDelay">800</div><button class="nb" data-cfg="interDelay" data-d="100" data-min="0" data-max="3000">+</button><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);margin-left:4px">ms</span></div>
+        <div class="sd">정답 확인 후 다음 지문 표시까지 기다리는 시간</div>
       </div>
     </div>
 
@@ -451,57 +456,125 @@ kbd{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;
     <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ac);letter-spacing:2px">HELP</span>
   </div>
   <div style="flex:1;overflow-y:auto;padding:16px">
+
     <div class="card">
       <div class="card-title">프로그램 소개</div>
       <p style="font-size:13px;line-height:1.9;color:var(--tx)">
-        읽기 훈련기는 <strong>텍스트 페이딩</strong> 기법을 활용한 독해 속도 및 집중력 훈련 도구입니다.<br><br>
+        읽기 훈련기는 <strong>텍스트 페이딩(Text Fading)</strong> 기법을 활용한 독해 속도·집중력 훈련 도구입니다.<br><br>
         지문이 글자 단위로 서서히 사라지는 동안 내용을 기억해야 하며, 이후 문제를 풀어 이해도를 확인합니다.
-        Nagler et al. (2015) 연구에 기반한 방식으로, 반복 훈련을 통해 읽기 속도와 작업 기억력을 향상시킵니다.
+        Nagler et al. (2015) 연구에 기반하며, 반복 훈련을 통해 읽기 속도와 작업 기억력을 향상시킵니다.
       </p>
     </div>
+
     <div class="card">
       <div class="card-title">사용법</div>
       <p style="font-size:13px;line-height:2;color:var(--tx)">
-        <strong>1. 문제집 불러오기</strong><br>
+        <strong>① 문제집 불러오기</strong><br>
         &nbsp;&nbsp;📂 JSON 불러오기 탭에서 파일을 선택하거나 붙여넣기로 문제집을 추가합니다.<br><br>
-        <strong>2. 훈련 시작</strong><br>
-        &nbsp;&nbsp;라이브러리에서 폴더를 열고 ▶ 버튼을 눌러 훈련을 시작합니다.<br><br>
-        <strong>3. 지문 읽기</strong><br>
-        &nbsp;&nbsp;지문이 표시되면 읽으세요. 글자는 설정된 속도에 따라 서서히 사라집니다.<br>
-        &nbsp;&nbsp;모두 사라지면 자동으로 문제 화면으로 전환됩니다.<br><br>
-        <strong>4. 문제 풀기</strong><br>
-        &nbsp;&nbsp;객관식: 보기를 클릭하거나 숫자 키(1~5)를 누릅니다. 자동으로 다음 지문으로 넘어갑니다.<br>
-        &nbsp;&nbsp;주관식: 답을 입력 후 제출 → 모범 답안 확인 → 정오답 판단 (키보드 1=오답, 2=정답)<br><br>
-        <strong>5. N-Back 모드</strong><br>
-        &nbsp;&nbsp;설정에서 N-Back 모드를 켜면 N번 전에 읽은 지문의 문제를 풀게 됩니다.<br>
-        &nbsp;&nbsp;작업 기억력 훈련에 효과적입니다.
+        <strong>② 훈련 시작</strong><br>
+        &nbsp;&nbsp;라이브러리에서 폴더를 열고 ▶ 버튼을 누르거나, 문제집 이름을 눌러 상세 화면에서 시작합니다.<br><br>
+        <strong>③ 지문 읽기</strong><br>
+        &nbsp;&nbsp;지문이 표시되면 읽으세요. <em>페이딩 시작 대기</em> 시간이 지나면 글자가 서서히 사라집니다.<br>
+        &nbsp;&nbsp;모든 글자가 사라지면 자동으로 문제 화면으로 전환됩니다.<br><br>
+        <strong>④ 문제 풀기 — 객관식</strong><br>
+        &nbsp;&nbsp;보기를 클릭하거나 숫자 키 <kbd>1</kbd>~<kbd>5</kbd>를 누릅니다.<br>
+        &nbsp;&nbsp;선택 후 <em>답 선택 후 자동 전환 딜레이</em>가 지나면 다음 지문으로 자동 이동합니다.<br><br>
+        <strong>⑤ 문제 풀기 — 주관식</strong><br>
+        &nbsp;&nbsp;답 입력 → 제출 → 모범 답안 확인 → <kbd>1</kbd> 오답 / <kbd>2</kbd> 정답 선택 → 즉시 다음 지문<br><br>
+        <strong>⑥ 훈련 종료</strong><br>
+        &nbsp;&nbsp;모든 지문을 완료하거나 오른쪽 상단 [종료] 버튼으로 결과 화면을 확인합니다.
       </p>
     </div>
+
     <div class="card">
       <div class="card-title">키보드 단축키</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div class="help-key-row"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd><kbd>5</kbd> <span>객관식 보기 선택 (일반/넘패드 숫자 모두 지원)</span></div>
-        <div class="help-key-row"><kbd>1</kbd> <span>주관식 채점 — 오답</span></div>
-        <div class="help-key-row"><kbd>2</kbd> <span>주관식 채점 — 정답</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="help-key-row">
+          <div style="display:flex;gap:4px"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd><kbd>5</kbd></div>
+          <span>객관식 보기 선택 — 일반 숫자키·넘패드 모두 지원</span>
+        </div>
+        <div class="help-key-row"><kbd>1</kbd><span>주관식 채점 — 오답으로 처리</span></div>
+        <div class="help-key-row"><kbd>2</kbd><span>주관식 채점 — 정답으로 처리</span></div>
+        <p style="font-size:11px;color:var(--dim);margin-top:2px">※ 텍스트 입력 중에는 단축키가 비활성화됩니다.</p>
       </div>
     </div>
+
+    <div class="card">
+      <div class="card-title">설정 옵션 안내</div>
+      <div style="display:flex;flex-direction:column;gap:14px;font-size:13px;line-height:1.7">
+
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--ac);margin-bottom:4px">화면 모드</div>
+          <p style="color:var(--tx)"><strong>다크</strong> — OLED 화면에 최적화된 어두운 배경.<br>
+          <strong>라이트</strong> — 밝은 환경에 적합한 흰 배경.<br>
+          <strong>이북</strong> — 이북 리더기 전용 완전 흑백. 애니메이션(스피너, 밑줄, 대기 점) 없음.</p>
+        </div>
+
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--ac);margin-bottom:4px">N-Back 모드</div>
+          <p style="color:var(--tx)">현재 지문이 아닌 <strong>N번째 전 지문</strong>의 문제를 풉니다. N=2이면 지금 읽은 지문이 아니라 2개 전에 읽은 지문의 문제가 나옵니다. 작업 기억력(Working Memory) 강화에 효과적입니다. N값은 1~9 사이에서 조절 가능합니다.</p>
+        </div>
+
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--ac);margin-bottom:4px">훈련 속도 모드</div>
+          <p style="color:var(--tx)"><strong>적응형</strong> — 연속 정답이 쌓이면 속도가 빨라지고, 연속 오답이 쌓이면 느려집니다. 자신의 수준에 맞게 자동 조절됩니다.<br>
+          <strong>수동</strong> — 훈련 화면에서 ↑/↓ 버튼으로 속도를 직접 조절합니다.</p>
+        </div>
+
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--ac);margin-bottom:4px">연속 정답/오답 기준</div>
+          <p style="color:var(--tx)">적응형 모드에서 몇 번 연속 정답이면 속도를 올릴지, 몇 번 연속 오답이면 속도를 내릴지 설정합니다. 기본값은 4연속.</p>
+        </div>
+
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--ac);margin-bottom:4px">시작 속도 (ms/글자)</div>
+          <p style="color:var(--tx)">훈련 시작 시 글자 하나가 사라지는 데 걸리는 시간(밀리초). 낮을수록 빠릅니다.<br>
+          초급 120ms · 중급 90ms · 고급 60ms 를 권장합니다.</p>
+        </div>
+
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--ac);margin-bottom:4px">속도 변화량 (%)</div>
+          <p style="color:var(--tx)">적응형 모드에서 속도가 변할 때 몇 % 씩 변할지 결정합니다. 10%이면 현재 속도에서 10% 빠르게 또는 느리게 조절됩니다.</p>
+        </div>
+
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--ac);margin-bottom:4px">페이딩 시작 대기 (ms)</div>
+          <p style="color:var(--tx)">지문이 화면에 나타난 후 글자가 사라지기 시작하기까지의 준비 시간. 이 시간 동안 지문을 처음부터 빠르게 훑을 수 있습니다. 0으로 설정하면 표시 즉시 페이딩이 시작됩니다.</p>
+        </div>
+
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--ac);margin-bottom:4px">답 선택 후 자동 전환 딜레이 (ms)</div>
+          <p style="color:var(--tx)">객관식 보기를 선택한 뒤 결과를 잠깐 확인하고 자동으로 다음 지문으로 넘어가기까지의 시간. 0으로 설정하면 선택 즉시 전환됩니다.</p>
+        </div>
+
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--ac);margin-bottom:4px">지문 간 딜레이 (ms)</div>
+          <p style="color:var(--tx)">한 지문이 끝나고 다음 지문이 나타나기까지의 공백 시간. 이 시간 동안 중앙에 점이 깜빡입니다. 너무 짧으면 눈이 피로해질 수 있습니다.</p>
+        </div>
+
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">JSON 형식</div>
-      <div class="fl" style="margin-bottom:5px">객관식</div>
+      <div class="fl" style="margin-bottom:5px">객관식 (보기 4~5개)</div>
       <pre style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--dim);overflow-x:auto;white-space:pre-wrap;margin-bottom:10px">[{
   "text": "지문 내용",
   "question": "질문?",
   "options": ["보기1","보기2","보기3","보기4"],
   "answer": 0
 }]</pre>
-      <div class="fl" style="margin-bottom:5px">주관식</div>
+      <p style="font-size:11px;color:var(--dim);margin-bottom:10px">answer는 정답 보기의 인덱스(0부터 시작). 위 예시는 "보기1"이 정답.</p>
+      <div class="fl" style="margin-bottom:5px">주관식 (자유 서술)</div>
       <pre style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--dim);overflow-x:auto;white-space:pre-wrap">[{
   "text": "지문 내용",
   "question": "질문?",
   "type": "short",
   "answer": "모범 답안"
 }]</pre>
+      <p style="font-size:11px;color:var(--dim);margin-top:6px">한 파일에 객관식과 주관식을 혼합할 수 있습니다.</p>
     </div>
+
     <div style="height:32px"></div>
   </div>
 </div>
@@ -648,7 +721,7 @@ const DCFG={
   geminiModels:['gemini-2.0-flash','gemini-2.5-flash','gemini-2.5-pro','gemini-1.5-flash'],
   topic:'',count:15,charMin:30,charMax:80,extraPrompt:'',wbName:'',lastFolder:'',
   streakUp:4,streakDown:4,speedStep:10,initSpeed:90,
-  speedMode:'adaptive',answerDelay:500,interDelay:800,
+  speedMode:'adaptive',preFadeDelay:300,answerDelay:500,interDelay:800,
   savedPrompts:[],
   nbackOn:false,nbackN:2,
 };
@@ -657,7 +730,7 @@ let CFG={...DCFG,...LS.get('rfader_cfg',{})};
 // API 키는 로컬에만 보관, 나머지는 Firebase에도 저장
 const CLOUD_CFG_KEYS=['provider','openaiModel','geminiModel','openaiModels','geminiModels',
   'topic','count','charMin','charMax','extraPrompt','wbName','lastFolder',
-  'streakUp','streakDown','speedStep','initSpeed','speedMode','answerDelay','interDelay','savedPrompts',
+  'streakUp','streakDown','speedStep','initSpeed','speedMode','preFadeDelay','answerDelay','interDelay','savedPrompts',
   'nbackOn','nbackN'];
 
 function saveCfg(){
@@ -1249,7 +1322,7 @@ function updateFolderSelects(){
 function restoreSettings(){
   document.querySelectorAll('[data-p]').forEach(b=>b.classList.toggle('active',b.dataset.p===CFG.provider));
   document.querySelectorAll('[data-sm]').forEach(b=>b.classList.toggle('active',b.dataset.sm===CFG.speedMode));
-  ['streakUp','streakDown','speedStep','initSpeed','answerDelay','interDelay'].forEach(k=>{
+  ['streakUp','streakDown','speedStep','initSpeed','preFadeDelay','answerDelay','interDelay'].forEach(k=>{
     const el=document.getElementById('val-'+k);if(el)el.textContent=CFG[k];
   });
   updateSpeedModeUI();
@@ -1333,7 +1406,7 @@ function loadSent(){
   // N-Back 배지
   const nb=document.getElementById('nbackBadge');
   if(nb){nb.style.display=CFG.nbackOn?'inline':'none';nb.textContent=CFG.nbackOn?`[${CFG.nbackN}-Back]`:'';}
-  startFading(chars.length);
+  delayTimer=setTimeout(()=>startFading(chars.length),CFG.preFadeDelay);
 }
 function startFading(n){
   // 각 글자+공백을 동일 간격(msPerChar)으로 처리
